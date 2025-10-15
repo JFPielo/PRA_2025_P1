@@ -2,7 +2,7 @@
 #include "ListArray.h"
 
 int main(){
-   /*
+   
     std::cout << std::boolalpha; // configuramos cout para mostrar true/false en lugar de 0/1.
 
     ListArray<int> list;
@@ -84,5 +84,6 @@ int main(){
     } catch (std::out_of_range &e){
         std::cout << "l.remove(3) => std::out_of_range: " << e.what() << std::endl; 
     }
-	*/
+	
+	return 0;
 }
