@@ -1,5 +1,4 @@
 #include <ostream>
-#include <algorithm>
 #include <stdexcept>
 #include "List.h"
 
@@ -14,7 +13,7 @@ private:
     void resize(int new_size){
         if(new_size < MINSIZE) new_size = MINSIZE;
         T* new_array = new T[new_size];
-        int num = std::min(this->n, new_size);
+        int num = (this->n < new_size) ? this->n : new_size; // reemplaza std::min
         for(int i = 0; i < num; ++i){
             new_array[i] = arr[i];
         }
@@ -105,7 +104,7 @@ public:
     }
 
     int size() override{
-        return n;
+        return n
     }
 };
 
