@@ -1,5 +1,4 @@
 #include <ostream>
-#include <stdexcept>
 #include "List.h"
 
 template <typename T>
@@ -11,16 +10,20 @@ private:
     static const int MINSIZE = 2;
 
     void resize(int new_size){
-        if(new_size < MINSIZE) new_size = MINSIZE;
-        T* new_array = new T[new_size];
-        int num = (this->n < new_size) ? this->n : new_size; // reemplaza std::min
-        for(int i = 0; i < num; ++i){
-            new_array[i] = arr[i];
+        if (this->max == this->n){
+            if(new_size < MINSIZE) {
+                new_size = MINSIZE;
+            }
+            T* aux = new T[new_size];
+            if(this->n > new_size) {
+                this->n = new_size;
+            }
+            for(int i = 0; i < this->n; ++i){
+                aux[i] = arr[i];
+            }
+            this->arr = aux;
+            this->max = new_size;
         }
-        delete[] this->arr;
-        this->arr = new_array;
-        this->max = new_size;
-        if(this->n > new_size) this->n = new_size;
     }
 public:
     ListArray(){
@@ -44,21 +47,26 @@ public:
         out << "List => [";
         for(int i = 0; i < list.n; ++i){
             out << list.arr[i];
-            if (i < list.n - 1) out << ", ";
+            if (i < list.n - 1) 
+            {
+                out << ", ";
+            }
         }
         out << "]";
         return out;
     }
 
     void insert(int pos, T e) override{
-        if(pos < 0 || pos > this->n){
+        if(pos < 0 || pos > size()){
             throw std::out_of_range("Posición fuera de rango");
         }
-        if(this->n + 1 > this->max) resize(this->max * 2);
-        for(int i = this->n; i > pos; --i){
-            this->arr[i] = this->arr[i-1];
+        resize(this->max + 1);
+
+        
+        for(int i = this->n; i > pos; i--){
+            arr[i] = this->arr[i-1];
         }
-        this->arr[pos] = e;
+        arr[pos] = e;
         this->n++;
     }
 
@@ -79,9 +87,9 @@ public:
             this->arr[i] = this->arr[i+1];
         }
         this->n--;
-        if(this->n > 0 && this->n < this->max/4 && this->max/2 >= MINSIZE){
-            resize(this->max / 2);
-        }
+        this->max--;
+        resize(this->max);
+        
         return ele;
     }
 
@@ -104,7 +112,7 @@ public:
     }
 
     int size() override{
-        return n
+        return n;
     }
 };
 
